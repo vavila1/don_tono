@@ -36,7 +36,7 @@ def consulta_lista(resultado):
     for row in resultado:
         lista.append(list(row))
     return lista
-
+#Funcion para modificar valores en la base de datos
 def mod(sql,valores):
     conn = conexion()
     cursor = conn.cursor()
@@ -46,8 +46,7 @@ def mod(sql,valores):
         conn.close()
         return True
     except Exception as e:
+        #Saber que error ocurrio. Al terminar el proyecto eliminar
         print(e)
         conn.rollback()  # Revertir los cambios en caso de error
         return False
-
-
