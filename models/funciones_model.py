@@ -25,10 +25,17 @@ def select(sql):
     conn.close()
     return resultados
 
+#Funcion que obtiene el timestamp
 def timestamp():
     current_datetime = datetime.datetime.now()
     formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
     return formatted_datetime
+#Funcion para convertir  el resultado de la consulta en lista
+def consulta_lista(resultado):
+    lista = []
+    for row in resultado:
+        lista.append(list(row))
+    return lista
 
 def mod(sql,valores):
     conn = conexion()
