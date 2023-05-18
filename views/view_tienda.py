@@ -1,5 +1,9 @@
 import sys
-sys.path.append("/Users/victoravila/Desktop/Tecnologías de información emergentes/Proyecto Final/don_tono/models")
+import os
+directorio_actual = os.getcwd()
+directorio_models = os.path.dirname(directorio_actual)
+directorio_models+= "/models"
+sys.path.append(directorio_models)
 import model_tienda as tienda
 def validarOpcion(mensaje):
   try:
