@@ -4,7 +4,7 @@ import tkinter as tk
 ventana = tk.Tk()
 
 # Configurar propiedades de la ventana
-ventana.title("Mi Ventana")
+ventana.title("Menu")
 ventana.geometry("400x300")
 
 # Agregar elementos a la ventana

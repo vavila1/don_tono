@@ -19,13 +19,20 @@ def crear_tienda():
         print("Se ha registrado con exito la tienda")
     else:
         print("Ha ocurrido un error al registrar la tienda")
+def mostrar_tiendas():
+    tiendas = tienda.leer_tiendas()
+    print("ID\tNombre\tDireccion\tFecha\n")
+    for row in tiendas:
+        print(row)
 opcion = 0
-while(opcion!=2):
-    print("MENU\n1- Crear Tienda\n2.-Salir")
+while(opcion!=3):
+    print("MENU\n1.- Crear Tienda\n2.- Mostrar Tiendas\n3.- Salir")
     opcion = validarOpcion("Ingresa el numero que  corresponda a la opcion deseada\n")
     if(opcion==1):
         crear_tienda()
-    elif(opcion==2):
+    elif(opcion == 2):
+        mostrar_tiendas()
+    elif(opcion==3):
         print("Saliendo del programa...")
     else:
         print("Esa opcion no esta registrada. Saliendo del programa...")
