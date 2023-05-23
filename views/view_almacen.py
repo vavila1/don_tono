@@ -1,64 +1,82 @@
-from models import model_almacen
-import model_almacen as alm 
-
-def pedir_datos_almacen():
-    nombre = input("Ingresa el nombre del almacen")
-    direccion = input("Ingrese la dirección del almacen: ")
-    estatus = 1  # Por defecto, el estatus será activo (1)
-    return [nombre, direccion, estatus]
-
-def menu_almacenes():
-    while True:
-        print("\n----- Menú de Almacenes -----")
-        print("1. Crear Almacen")
-        print("2. Leer Almacenes")
-        print("3. Leer Almacen por ID")
-        print("4. Editar Almacen")
-        print("5. Eliminar Almacen")
-        print("6. Salir")
-        opcion = int(input("Seleccione una opción: "))
-
-        if opcion == 1:
-            valores = pedir_datos_almacen()
-            if alm.crear_almacen(valores):
-                print("¡Almacen creado exitosamente!")
-            else:
-                print("Error al crear el almacen.")
-
-        elif opcion == 2:
-            resultados = alm.leer_almacenes()
-            print("\n----- Almacenes -----")
-            for resultado in resultados:
-                print(resultado)
-
-        elif opcion == 3:
-            id = input("Ingrese el ID del almacen a buscar: ")
-            resultado = alm.leer_almacen(id)
-            if resultado:
-                print("\n----- Almacen encontrado -----")
-                print(resultado)
-            else:
-                print("No se encontró ningún almacen con ese ID.")
-
-        elif opcion == 4:
-            id = input("Ingrese el ID del almacen a editar: ")
-            valores = pedir_datos_almacen()
-            valores.append(alm.timestamp())
-            if alm.editar_almacen(id, valores):
-                print("¡Almacen editado exitosamente!")
-            else:
-                print("Error al editar el almacen.")
-
-        elif opcion == 5:
-            id = input("Ingrese el ID del almacen a eliminar: ")
-            if alm.eliminar_almacen(id):
-                print("¡Almacen eliminado exitosamente!")
-            else:
-                print("Error al eliminar el almacen.")
-
-        elif opcion == 6:
-            print("¡Hasta luego, gracias por usar el sistema Don Toño!")
-            break
-
+import sys
+import os
+directorio_actual = os.getcwd()
+directorio_models = os.path.dirname(directorio_actual)
+directorio_models+= "/models"
+sys.path.append(directorio_models)
+import model_almacen as almacen
+def validarOpcion(mensaje):
+  try:
+    variable = int(input(mensaje))
+    return variable
+  except:
+    print("Debes ingresar un numero que corresponda a la opción elegida")
+    return False
+def crear_almacen():
+    preguntas = ["Escribe el nombre del almacen","Escribe la direccion del almacen"]
+    valores = []
+    for i in preguntas:
+        valores.append(input(i+"\n"))
+    valores.append(1)
+    resultado = almacen.crear_almacen(valores)
+    if(resultado == True):
+        print("Se ha registrado con exito la tienda")
+    else:
+        print("Ha ocurrido un error al registrar la tienda")
+def mostrar_almacenes():
+    almacenes = almacen.leer_almacenes()
+    print("ID\tNombre\tDireccion\tFecha\n")
+    for row in almacenes:
+        print(str(row[0])+"\t"+str(row[1])+"\t"+str(row[2])+"\t"+str(row[4]))
+def editar_almacen(id):
+    valor_viejo = almacen.leer_almacen(id)
+    valores = [valor_viejo[1],valor_viejo[2]]
+    inputs = []
+    opcion1 = validarOpcion("Ingresa 1 en caso de querer editar el nombre\nIngresa 2 para pasar al siguiente dato\n")
+    if(opcion1 == 1):
+        nombre = input("Escribe el nombre nuevo\n")
+        valores[0] = nombre
+        inputs.append(1)
+    else:
+        inputs.append(2)
+    opcion2 = validarOpcion("Ingresa 1 en caso de querer editar la direccion\nIngresa 2 para pasar al siguiente dato\n")
+    if(opcion2 == 1):
+        dir = input("Escribe la nueva direccion\n")
+        valores[1] = dir
+        inputs.append(1)
+    else:
+        inputs.append(2)
+    if(inputs[0] == 1 or inputs[1] == 1):
+        resultado = almacen.editar_almacen(id,valores)
+        if(resultado == True):
+            print("Se ha editado con exito la tienda")
         else:
-            print("Opción inválida. Intente nuevamente.")
+            print("Ocurrio un error al editar la tienda")
+    else:
+        print("No hay nada que editar")
+def eliminar_almacen(id):
+    resultado = almacen.eliminar_almacen(id)
+    if(resultado == True):
+        print("Se ha eliminado la tienda con exito")
+    else:
+        print("Hubo un error al eliminar la tienda")
+opcion = 0
+while(opcion!=5):
+    print("MENU\n1.- Crear Tienda\n2.- Mostrar Tiendas\n3.- Editar Tienda\n4.- Eliminar Tienda\n5.- Salir")
+    opcion = validarOpcion("Ingresa el numero que  corresponda a la opcion deseada\n")
+    if(opcion==1):
+        crear_almacen()
+    elif(opcion==2):
+        mostrar_almacenes()
+    elif(opcion==3):
+        mostrar_almacenes()
+        id = validarOpcion("Escribe el ID correspondiente del almacen a editar\n")
+        editar_almacen(id)
+    elif(opcion == 4):
+        mostrar_almacenes()
+        id = validarOpcion("Escribe el ID correspondiente del almacen a eliminar\n")
+        eliminar_almacen(id)
+    elif(opcion==5):
+        print("Saliendo del programa...")
+    else:
+        print("Esa opcion no esta registrada. Saliendo del programa...")

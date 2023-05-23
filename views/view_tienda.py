@@ -34,7 +34,7 @@ def editar_tienda(id):
     inputs = []
     opcion1 = validarOpcion("Ingresa 1 en caso de querer editar el nombre\nIngresa 2 para pasar al siguiente dato\n")
     if(opcion1 == 1):
-        nombre = input("Escribe el nombre nuevo")
+        nombre = input("Escribe el nombre nuevo\n")
         valores[0] = nombre
         inputs.append(1)
     else:
