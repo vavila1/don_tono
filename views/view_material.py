@@ -82,9 +82,13 @@ def editar_material(id):
     else:
         print("No hay nada que editar")
 def eliminar_material(id):
+    resultado = material.leer_material(id)
+    if(resultado == []):
+        print("No existe en la base de datos")
+        return
     resultado = material.eliminar_material(id)
     if(resultado == True):
-        print("Se ha el material con exito")
+        print("Se ha eliminado el material con exito")
     else:
         print("Hubo un error al eliminar la tienda")
 opcion = 0

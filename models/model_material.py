@@ -11,7 +11,7 @@ def leer_materiales():
     resultado = q.consulta_lista(resultado)
     return resultado
 def leer_material(id):
-    consulta = "Select * from material where id = "+str(id)
+    consulta = "Select * from material where id = "+str(id)+" AND estatus = 1"
     resultado = q.select(consulta)
     resultado = q.consulta_lista(resultado)
     if(resultado != []):
