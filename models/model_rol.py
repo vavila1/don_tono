@@ -1,0 +1,28 @@
+#Aqui se encuentra CRUD rol
+import funciones_model as q
+
+def crear_rol(valores):
+    valores.append(q.timestamp())
+    resultado = q.mod("INSERT INTO rol (nombre, estatus, created_at) VALUES (%s, %s, %s)",
+                  (valores[0], valores[1],valores[2]))
+    return resultado
+def leer_roles():
+    resultado = q.select('Select * from rol where estatus = 1')
+    resultado = q.consulta_lista(resultado)
+    return resultado
+def leer_rol(id):
+    consulta = "Select * from rol where id = "+str(id)+" AND estatus = 1"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    if(resultado != []):
+        return resultado[0]
+    return resultado
+def editar_rol(id,valores):
+    #esto sirve para agregar el id al final de la lista ya que asi es la sintaxis para agregar valores a la consulta
+    valores.append(q.timestamp())
+    valores.append(id)
+    resultado = q.mod("Update rol set nombre = %s, updated_at = %s where id = %s",(valores[0],valores[1],valores[2]))
+    return resultado
+def eliminar_rol(id):
+    resultado = q.mod("Update rol set estatus = %s where id = %s",(2,id))
+    return resultado
