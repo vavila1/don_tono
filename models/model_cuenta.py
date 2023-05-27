@@ -17,6 +17,14 @@ def leer_cuenta(id):
     if(resultado != []):
         return resultado[0]
     return resultado
+def leer_cuenta_correo(correo):
+    consulta = "Select cuenta.id as id, rol.nombre as rol, rol.id as id_rol, cuenta.correo, cuenta.contra, cuenta.created_at from rol,cuenta where cuenta.correo = '"+correo+"' AND cuenta.estatus = 1 AND cuenta.rol_id = rol.id"
+    print(consulta)
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    if(resultado != []):
+        return resultado[0]
+    return resultado
 def editar_cuenta(id,valores):
     #esto sirve para agregar el id al final de la lista ya que asi es la sintaxis para agregar valores a la consulta
     valores.append(q.timestamp())

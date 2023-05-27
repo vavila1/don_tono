@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-05-2023 a las 22:31:25
+-- Tiempo de generación: 27-05-2023 a las 05:36:53
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -60,12 +60,12 @@ CREATE TABLE `cuenta` (
 
 CREATE TABLE `empleado` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `apellido_paterno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `apellido_materno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cuenta_id` bigint(20) UNSIGNED NOT NULL,
   `almacen_id` bigint(20) UNSIGNED DEFAULT NULL,
   `tienda_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `apellido_paterno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `apellido_materno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `estatus` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
