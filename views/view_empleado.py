@@ -117,43 +117,67 @@ def mostrar_empleados():
     print("ID\tCuenta\tAlmacen/Tienda\tNombre\tApellido Paterno\tApellido Materno\tFecha\n")
     for row in empleados:
         print(str(row[0])+"\t"+str(row[1])+"\t"+str(row[2])+"\t"+str(row[3])+"\t"+str(row[4])+"\t"+str(row[5])+"\t"+str(row[6]))
-"""def editar_cuenta(id):
-    valor_viejo = cuenta.leer_cuenta(id)
+def editar_empleado(id):
+    valor_viejo = empleado.leer_empleado(id)
     if(valor_viejo == []):
         print("No existe el dato en la base de datos")
         return
-    valores = [valor_viejo[2],valor_viejo[3],valor_viejo[4]]
+    valores = [valor_viejo[1],valor_viejo[4],valor_viejo[5],valor_viejo[6]]
+    print(valores)
     inputs = []
-    opcion1 = iterarValidacion("Ingresa 1 en caso de querer editar el rol de la cuenta \nIngresa 2 para pasar al siguiente dato\n")
+    lugar_trabajo = 0
+    opcion1 = iterarValidacion("Ingresa 1 en caso de querer editar el lugar de trabajo \nIngresa 2 para pasar al siguiente dato\n")
     if(opcion1 == 1):
-        rol = Roles()
-        valores[0] = rol
-        inputs.append(1)
+        opcion2 = iterarValidacion("Ingresa 1 si deseas que el empleado se asigne a un almacen\nIngresa 2 si deseas que el empleado se asigne a una tienda\n")
+        if(opcion2==1):
+            id_almacen = Almacenes()
+            valores[0] = id_almacen
+            inputs.append(1)
+            lugar_trabajo = 1
+        elif(opcion2 == 2):
+            id_tienda = Tiendas()
+            valores[0] = id_tienda
+            inputs.append(1)
+            lugar_trabajo = 2
     else:
         inputs.append(2)
-    opcion2 = iterarValidacion("Ingresa 1 en caso de querer editar el correo de la cuenta \nIngresa 2 para pasar al siguiente dato\n")
-    if(opcion2 == 1):
-        correo = input("Escribe el nuevo correo\n")
-        valores[1] = correo
-        inputs.append(1)
-    else:
-        inputs.append(2)
-    opcion3 = iterarValidacion("Ingresa 1 en caso de querer editar la contrasena de la cuenta\nIngresa 2 para pasar al siguiente dato\n")
+    opcion3 = iterarValidacion("Ingresa 1 en caso de querer editar el nombre del empleado \nIngresa 2 para pasar al siguiente dato\n")
     if(opcion3 == 1):
-        contra = input("Escribe la nueva contrasena\n")
-        valores[2] = contra
+        nombre = input("Escribe el nuevo nombre del empleado\n")
+        valores[1] = nombre
         inputs.append(1)
     else:
         inputs.append(2)
-    if(inputs[0] == 1 or inputs[1] == 1 or inputs[2] == 1):
-        resultado = cuenta.editar_cuenta(id,valores)
-        if(resultado == True):
-            print("Se ha editado con exito la cuenta")
-        else:
-            print("Ocurrio un error al editar la cuenta")
+    opcion4 = iterarValidacion("Ingresa 1 en caso de querer editar el apellido paterno del empleado\nIngresa 2 para pasar al siguiente dato\n")
+    if(opcion4 == 1):
+        apellido_paterno = input("Escribe el nuevo apellido paterno\n")
+        valores[2] = apellido_paterno
+        inputs.append(1)
+    else:
+        inputs.append(2)
+    opcion5 = iterarValidacion("Ingresa 1 en caso de querer editar el apellido materno del empleado\nIngresa 2 para pasar al siguiente dato\n")
+    if(opcion5 == 1):
+        apellido_materno = input("Escribe el nuevo apellido materno\n")
+        valores[3] = apellido_materno
+        inputs.append(1)
+    else:
+        inputs.append(2)
+    if(inputs[0] == 1 or inputs[1] == 1 or inputs[2] == 1 or inputs[3] == 1):
+        if(lugar_trabajo == 1):
+            resultado = empleado.editar_empleado_almacen(id,valores)
+            if(resultado == True):
+                print("Se ha editado con exito la cuenta")
+            else:
+                print("Ocurrio un error al editar la cuenta")
+        elif(lugar_trabajo == 2):
+            resultado = empleado.editar_empleado_tienda(id,valores)
+            if(resultado == True):
+                print("Se ha editado con exito la cuenta")
+            else:
+                print("Ocurrio un error al editar la cuenta")
     else:
         print("No hay nada que editar")
-def eliminar_cuenta(id):
+"""def eliminar_cuenta(id):
     resultado = cuenta.leer_cuenta(id)
     if(resultado == []):
         print("No existe en la base de datos")
@@ -165,12 +189,16 @@ def eliminar_cuenta(id):
         print("Hubo un error al eliminar la tienda")"""
 opcion = 0
 while(opcion!=5):
-    print("MENU\n1.- Crear Empleado\n2.- Mostrar Empleados\n3.- Editar Cuenta\n4.- Eliminar Cuenta\n5.- Salir")
+    print("MENU\n1.- Crear Empleado\n2.- Mostrar Empleados\n3.- Editar Empleado\n4.- Eliminar Cuenta\n5.- Salir")
     opcion = validarOpcion("Ingresa el numero que  corresponda a la opcion deseada\n")
     if(opcion==1):
         crear_empleado()
     elif(opcion==2):
         mostrar_empleados()
+    elif(opcion == 3):
+        mostrar_empleados()
+        id = iterarValidacion("Escribe el ID correspondiente del empleado a editar\n")
+        editar_empleado(id)
     elif(opcion==5):
         print("Saliendo del programa...")
     else:
