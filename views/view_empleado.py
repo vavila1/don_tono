@@ -123,7 +123,6 @@ def editar_empleado(id):
         print("No existe el dato en la base de datos")
         return
     valores = [valor_viejo[1],valor_viejo[4],valor_viejo[5],valor_viejo[6]]
-    print(valores)
     inputs = []
     lugar_trabajo = 0
     opcion1 = iterarValidacion("Ingresa 1 en caso de querer editar el lugar de trabajo \nIngresa 2 para pasar al siguiente dato\n")
@@ -177,19 +176,24 @@ def editar_empleado(id):
                 print("Ocurrio un error al editar la cuenta")
     else:
         print("No hay nada que editar")
-"""def eliminar_cuenta(id):
-    resultado = cuenta.leer_cuenta(id)
-    if(resultado == []):
+def eliminar_empleado(id):
+    info_empleado = empleado.leer_empleado(id)
+    if(info_empleado == []):
         print("No existe en la base de datos")
         return
-    resultado = cuenta.eliminar_cuenta(id)
+    resultado = cuenta.eliminar_cuenta(info_empleado[8])
     if(resultado == True):
-        print("Se ha eliminado el material con exito")
+        print("Se ha eliminado la cuenta con exito")
+        resultado2 = empleado.eliminar_empleado(id)
+        if(resultado2 == True):
+            print("Se ha eliminado el empleado con exito")
+        else:
+            print("Hubo un error al eliminar el empleado")
     else:
-        print("Hubo un error al eliminar la tienda")"""
+        print("Hubo un error al eliminar cuenta")
 opcion = 0
 while(opcion!=5):
-    print("MENU\n1.- Crear Empleado\n2.- Mostrar Empleados\n3.- Editar Empleado\n4.- Eliminar Cuenta\n5.- Salir")
+    print("MENU\n1.- Crear Empleado\n2.- Mostrar Empleados\n3.- Editar Empleado\n4.- Eliminar Empleado\n5.- Salir")
     opcion = validarOpcion("Ingresa el numero que  corresponda a la opcion deseada\n")
     if(opcion==1):
         crear_empleado()
@@ -199,6 +203,10 @@ while(opcion!=5):
         mostrar_empleados()
         id = iterarValidacion("Escribe el ID correspondiente del empleado a editar\n")
         editar_empleado(id)
+    elif(opcion == 4):
+        mostrar_empleados()
+        id = iterarValidacion("Escribe el ID correspondiente del empleado a eliminar\n")
+        eliminar_empleado(id)
     elif(opcion==5):
         print("Saliendo del programa...")
     else:
