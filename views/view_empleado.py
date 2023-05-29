@@ -162,13 +162,13 @@ def editar_empleado(id):
     else:
         inputs.append(2)
     if(inputs[0] == 1 or inputs[1] == 1 or inputs[2] == 1 or inputs[3] == 1):
-        if(lugar_trabajo == 1):
+        if(lugar_trabajo == 1 or lugar_trabajo == 0):
             resultado = empleado.editar_empleado_almacen(id,valores)
             if(resultado == True):
-                print("Se ha editado con exito la cuenta")
+                print("Se ha editado con exito al empleado")
             else:
-                print("Ocurrio un error al editar la cuenta")
-        elif(lugar_trabajo == 2):
+                print("Ocurrio un error al editar el empleado")
+        elif(lugar_trabajo == 2 or lugar_trabajo == 0):
             resultado = empleado.editar_empleado_tienda(id,valores)
             if(resultado == True):
                 print("Se ha editado con exito la cuenta")
