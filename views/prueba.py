@@ -66,7 +66,7 @@ boton.pack()
 
 # Iniciar el bucle principal de la ventana
 ventana.mainloop()"""
-"""import tkinter as tk
+import tkinter as tk
 
 def cambiar_a_ventana_personalizada():
     frame_principal.grid_remove()
@@ -97,7 +97,7 @@ label_ventana_personalizada.pack()
 frame_principal.grid()
 
 # Iniciar el bucle principal de la ventana principal
-ventana_principal.mainloop()"""
+ventana_principal.mainloop()
 
 
 """import tkinter as tk
@@ -130,9 +130,45 @@ btn_iniciar_sesion.pack()
 
 ventana.mainloop()"""
 
+"""import tkinter as tk
+from tkinter import ttk
+
+productos = [[1, "Coca Cola"], [2, "Fanta"], [3, "Sprite"]]
+tabla = None
+
+def crear_tabla():
+    global tabla  # Declarar la variable como global
+    tabla = ttk.Treeview(ventana, columns=("ID", "Nombre"))
+    tabla.heading("#0", text="Índice")
+    tabla.heading("ID", text="ID")
+    tabla.heading("Nombre", text="Nombre")
+
+    for i, producto in enumerate(productos):
+        tabla.insert("", "end", text=str(i+1), values=(producto[0], producto[1]))
+
+    tabla.pack()
+
+def limpiar_tabla():
+    global tabla  # Declarar la variable como global
+    if tabla is not None:
+        tabla.delete(*tabla.get_children())  # Elimina todos los elementos de la tabla
+
+ventana = tk.Tk()
+
+btn = tk.Button(ventana, text="Listar Productos", command=crear_tabla)
+btn.pack()
+
+btn2 = tk.Button(ventana, text="Limpiar Tabla", command=limpiar_tabla)
+btn2.pack()
+
+ventana.mainloop()""" 
 
 
 
 
+"""def editar_eliminar(event):
+    logica"""
 
 
+"""# Asociar el evento de clic a la tabla
+    tabla.bind("<ButtonRelease-1>", editar_elminiar)"""
