@@ -14,7 +14,9 @@ def leer_almacen(id):
     consulta = "Select * from almacen where id="+str(id)+" AND estatus=1"
     resultado = q.select(consulta)
     resultado = q.consulta_lista(resultado)
-    return resultado[0]
+    if(resultado != []):
+        return resultado[0]
+    return resultado
 def editar_almacen(id,valores):
     #esto sirve para agregar el id al final de la lista ya que asi es la sintaxis para agregar valores a la consulta
     valores.append(q.timestamp())

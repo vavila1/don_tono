@@ -14,7 +14,9 @@ def leer_tipo_unidad(id):
     consulta = "Select * from tipo_unidad where id = "+str(id)
     resultado = q.select(consulta)
     resultado = q.consulta_lista(resultado)
-    return resultado[0]
+    if(resultado != []):
+        return resultado[0]
+    return resultado
 def editar_tipo_unidad(id,valores):
     #esto sirve para agregar el id al final de la lista ya que asi es la sintaxis para agregar valores a la consulta
     valores.append(q.timestamp())

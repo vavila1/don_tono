@@ -27,7 +27,7 @@ def mostrar_tipo_unidad():
     tiendas = tipo_unidad.leer_tipos_unidades()
     print("ID\tNombre\tFecha\n")
     for row in tiendas:
-        print(str(row[0])+"\t"+str(row[1])+"\t"+str(row[3]))
+        print(str(row[0])+"\t"+str(row[1])+"\t"+str(row[2]))
 def editar_tipo_unidad(id):
     valor_viejo = tipo_unidad.leer_tipo_unidad(id)
     valores = [valor_viejo[1]]
