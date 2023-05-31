@@ -66,7 +66,8 @@ def root_crear_tienda():
 def command_crear_tienda(nombre, direccion):
     frame_crear_tienda.destroy()
     crear_tienda(nombre,direccion)
-
+    root_mostrar_tienda()
+    
 def root_mostrar_tienda():
     #Creacion de la ventana root_crear_tienda
     global frame_mostrar_tienda
@@ -99,6 +100,7 @@ def root_mostrar_tienda():
     #Mostrar los witgets en la ventana
     tabla_datos_tienda.pack()
     button_actualizar_tabla = Button(frame_mostrar_tienda, text="Actualizar", width=15, bg="#66FCF1", command=root_mostrar_tienda).pack(padx=5, pady=5)
+
 def root_editar_tienda():
     global frame_editar_tienda
     if frame_crear_tienda:
@@ -129,7 +131,8 @@ def root_editar_tienda():
 def command_editar_tienda(ids, nombre, direccion):
     frame_editar_tienda.destroy()
     editar_tienda(ids,nombre,direccion)
-
+    root_mostrar_tienda()
+    
 def root_eliminar_tienda():
     global frame_eliminar_tienda
     if frame_crear_tienda:
@@ -152,6 +155,7 @@ def root_eliminar_tienda():
 def command_eliminar_tienda(ids):
     frame_eliminar_tienda.destroy()
     eliminar_tienda(ids)
+    root_mostrar_tienda()
     
 def root_almacen_return():
     root_almacen.destroy()  
