@@ -5,7 +5,6 @@ directorio_models = os.path.dirname(directorio_actual)
 directorio_models+= "/models"
 sys.path.append(directorio_models)
 import model_venta as venta
-import model_existencias_tienda as existencias_tienda
 import time
 #Funcion para segundo identificador de veta
 def id2():
@@ -23,29 +22,27 @@ def iterarValidacion(mensaje):
         opcion = validarOpcion(mensaje)
     return opcion
 def crear_venta(empleado_id,tienda_id):
-    materiales_tienda = existencias_tienda.consultar_existencias_tienda(tienda_id)
-    id_2 = id2()
-    variable_venta = venta.registrar_venta(valores=[empleado_id,tienda_id,id_2,1])
-    if(variable_venta == True):
-        venta_id = venta.consultar_id_venta(id_2)
-        venta_id = venta_id[0]
-        print("ID\tMaterial\tCantidad\tPrecio\n")
-        for row in materiales_tienda:
-            print(str(row[0])+"\t"+str(row[1])+"\t"+str(row[2])+"\t"+str(row[3]))
-        material_id = iterarValidacion("Escoge el id del material existente\n")
-        material_precio = existencias_tienda.consultar_existencia_material(tienda_id,material_id)
-        cantidad = iterarValidacion("Ingresa la cantidad de material\n")
-        cantidad_restante = material_precio[2]-cantidad
-        if(cantidad>cantidad_restante):
-            return
-        resultado = venta.registrar_material_vendido(valores=[venta_id,tienda_id,material_id,cantidad,material_precio[3]*cantidad,1])
-        resultado2 = existencias_tienda.editar_existencia_material(valores=[cantidad_restante,tienda_id,material_id])
-        if(resultado == True):
-            print("Se ha registrado con exito la venta")
-        else:
-            print("Hubo un error al registrar la venta")
+    lista_materiales = []
+    valores = []
+    valores.append(tienda_id)
+    existencias = venta.existencias_tienda(tienda_id)
+    print("ID\tMaterial\tCantidad en existencia")
+    for row in existencias:
+        print(str(row[0])+"\t"+str(row[1]+"\t"+str(row[2])))
+    valores.append(iterarValidacion("Selecciona el id del material a agregar\n"))
+    valores.append(empleado_id)
+    valores.append(iterarValidacion("Ingresa la cantidad de material\n"))
+    venta_id = venta.ultima_venta_id()
+    if(venta_id==[]):
+        venta_id = 1
     else:
-        print("Hubo un error al crear la venta")
+        venta_id = venta_id+1
+
+    resultado = venta.registrar_venta(valores,venta_id)
+    if(resultado == True):
+        print("Se ha registrado con exito la venta")
+    else:
+        print("Ha ocurrido un error al registrar la venta")
 """def mostrar_roles():
     roles = rol.leer_roles()
     print("ID\tNombre\tFecha\n")
