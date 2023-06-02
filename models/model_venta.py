@@ -85,3 +85,13 @@ def registrar_venta(valores,venta_id):
         # Cerrar el cursor y la conexión
         cursor.close()
         conexion.close()
+def reporte_ventas_materiales():
+    consulta = "select material.nombre, SUM(ventas.precio) from material, ventas where ventas.material_id = material.id GROUP BY ventas.material_id"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    return resultado
+def reporte_ventas_empleados():
+    consulta = "select empleado.nombre, empleado.apellido_paterno, SUM(ventas.precio) from empleado, ventas where ventas.empleado_id = empleado.id GROUP BY ventas.empleado_id"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    return resultado
