@@ -1,11 +1,16 @@
 import sys
 import os
-directorio_actual = os.getcwd()
-directorio_models = os.path.dirname(directorio_actual)
-directorio_models+= "/models"
+# Obtén la ruta del directorio actual
+directorio_actual = os.path.dirname(os.path.abspath(__file__))
+
+# Agrega el directorio 'views' al sys.path
+directorio_models = os.path.join(directorio_actual, "..", "models")
 sys.path.append(directorio_models)
 import model_rol as rol
 import model_cuenta as cuenta
+from view_empleado import *
+from tkinter.messagebox import *
+
 def validarOpcion(mensaje):
   try:
     variable = int(input(mensaje))
@@ -27,21 +32,20 @@ def Roles():
         print(str(row[0])+".- "+row[1])
     id_roles = iterarValidacion("Ingresa el numero que represente el rol de la cuenta\n")
     return id_roles
-def crear_cuenta():
-    id_rol = Roles()
-    if(id_rol == 0):
-        return
-    preguntas = ["Escribe el correo de la cuenta","Escribe la contrasena de la cuenta"]
-    valores = []
-    valores.append(id_rol)
-    for i in preguntas:
-        valores.append(input(i+"\n"))
-    valores.append(1)
-    resultado = cuenta.crear_cuenta(valores)
+
+def crear_cuenta(correo,password,rol,nombre, apellido_paterno, apellido_materno, lugar_trabajo_id):
+    valores = [rol,correo,password,1]
+    resultado = cuenta.crear_cuentas(valores)
+    
     if(resultado == True):
-        print("Se ha registrado con exito el rol")
+        showinfo(message="Se ha registrado con exito la cuenta", title="Proceso exitoso")
+        cuenta_id = cuenta.leer_ultimo_id(correo)
+        crear_empleado(cuenta_id,rol,lugar_trabajo_id,nombre, apellido_paterno, apellido_materno)
     else:
-        print("Ha ocurrido un error al registrar el rol")
+        showerror(message="Ha ocurrido un error al registrar la cuenta", title="Proceso fallido")
+
+
+
 def mostrar_cuentas():
     cuentas = cuenta.leer_cuentas()
     print("ID\tRol\tCorreo\tFecha\n")
@@ -93,6 +97,8 @@ def eliminar_cuenta(id):
         print("Se ha eliminado el material con exito")
     else:
         print("Hubo un error al eliminar la tienda")
+
+"""
 opcion = 0
 while(opcion!=5):
     print("MENU\n1.- Crear Cuenta\n2.- Mostrar Cuentas\n3.- Editar Cuenta\n4.- Eliminar Cuenta\n5.- Salir")
@@ -114,3 +120,4 @@ while(opcion!=5):
     else:
         opcion = 5
         print("Esa opcion no esta registrada. Saliendo del programa...")
+        """

@@ -4,10 +4,19 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import *
 
-directorio_actual = os.getcwd()
-directorio_models = os.path.join(directorio_actual, "models")
+# Obtén la ruta del directorio actual
+directorio_actual = os.path.dirname(os.path.abspath(__file__))
+
+# Agrega el directorio 'views' al sys.path
+directorio_models = os.path.join(directorio_actual, "..", "models")
 sys.path.append(directorio_models)
 
+"""
+directorio_actual = os.getcwd()
+directorio_models = os.path.dirname(directorio_actual)
+directorio_models+= "/models"
+sys.path.append(directorio_models)
+"""
 
 
 try:
