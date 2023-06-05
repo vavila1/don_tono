@@ -50,3 +50,6 @@ def mod(sql,valores):
         print(e)
         conn.rollback()  # Revertir los cambios en caso de error
         return False
+    
+def fecha_actual():
+    return datetime.date.today()

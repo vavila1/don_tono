@@ -7,6 +7,9 @@ directorio_actual = os.path.dirname(os.path.abspath(__file__))
 # Agrega el directorio 'views' al sys.path
 directorio_views = os.path.join(directorio_actual, "..", "views")
 sys.path.append(directorio_views)
+
+directorio_models = os.path.join(directorio_actual, "..", "models")
+sys.path.append(directorio_models)
 """
 directorio_actual = os.getcwd()
 directorio_views = os.path.dirname(directorio_actual)
@@ -19,6 +22,8 @@ from view_empleado import *
 from view_cuenta import *
 from tkinter import *
 from tkinter import ttk
+from model_venta import * 
+from funciones_model import *
 #-------------------Tiendas-----------------------------
         
 def root_crear_tienda():
@@ -48,7 +53,7 @@ def command_crear_tienda(nombre, direccion):
 def root_mostrar_tienda():
     #Creacion del frame root_mostrar_tienda
     global frame_mostrar_tienda
-    frame_mostrar_tienda = Frame(root, background="#C5C6C7")  # Agrega el relleno deseado entre los botones
+    frame_mostrar_tienda = Frame(root, background="#6c648B")  # Agrega el relleno deseado entre los botones
     frame_mostrar_tienda.grid(row=0, column=1, sticky="nsew")
     #Crear los witgets que se utilizaran
     tabla_datos_tienda = ttk.Treeview(frame_mostrar_tienda, columns=("ID","Nombre","Dirección","Fecha"),show="headings")
@@ -114,7 +119,7 @@ def command_eliminar_tienda(tabla):
 def root_mostrar_empleado():
     #Creacion de la ventana root_mostrar_empleado
     global frame_mostrar_empleado
-    frame_mostrar_empleado = Frame(root, background="#C5C6C7")  # Agrega el relleno deseado entre los botones
+    frame_mostrar_empleado = Frame(root, background="#6c648B")  # Agrega el relleno deseado entre los botones
     frame_mostrar_empleado.grid(row=0, column=1, sticky="nsew")
     #Crear los witgets que se utilizaran
     tabla_datos_empleado = ttk.Treeview(frame_mostrar_empleado, columns=("Id","Nombre","Apellido_paterno","Apellido_materno", "Correo","Lugar_trabajo" , "fecha"),show="headings")
@@ -268,6 +273,93 @@ def command_eliminar_empleado(tabla):
     id = valores[0]
     eliminar_empleado(id)
     root_mostrar_empleado()
+    
+#-------------------Reporte empleado--------------------
+def root_reportes_empleado():
+    frame_reportes_empleado = Frame(root, background="#C5C6C7")  # Agrega el relleno deseado entre los botones
+    frame_reportes_empleado.grid(row=0, column=1, sticky="nsew")  
+    root_mostrar_reportes_empleado()
+
+def root_reportes_material():
+    frame_reportes_material = Frame(root, background="#C5C6C7")  # Agrega el relleno deseado entre los botones
+    frame_reportes_material.grid(row=0, column=1, sticky="nsew")  
+    root_mostrar_reportes_material()
+    
+def root_mostrar_reportes_empleado():
+    #Creacion de la ventana root_crear_tienda
+    global frame_mostrar_reportes_empleado
+    frame_mostrar_reportes_empleado = Frame(root, background="#6c648B")  # Agrega el relleno deseado entre los botones
+    frame_mostrar_reportes_empleado.grid(row=0, column=1, sticky="nsew")
+    #Crear los witgets que se utilizaran
+    tabla_reportes_empleado = ttk.Treeview(frame_mostrar_reportes_empleado, columns=("ID","Nombre","Apellido Paterno","Total Ventas"),show="headings")
+    tabla_reportes_empleado.column(0, width=80)
+    tabla_reportes_empleado.column(1, width=80)
+    tabla_reportes_empleado.column(2, width=80)
+    tabla_reportes_empleado.column(3, width=130)
+    tabla_reportes_empleado.heading(0, text="ID", anchor=CENTER)
+    tabla_reportes_empleado.heading(1, text="Nombre", anchor=CENTER)
+    tabla_reportes_empleado.heading(2, text="Apellido Paterno", anchor=CENTER)
+    tabla_reportes_empleado.heading(3, text="Total Ventas", anchor=CENTER)
+    reportes_empleado = reporte_ventas_empleados()
+    for row in reportes_empleado:
+        tabla_reportes_empleado.insert('','end',values=[row[0],row[1],row[2],row[3]])
+    #Mostrar los witgets en la ventana
+    tabla_reportes_empleado.pack()
+def root_mostrar_reportes_material():
+    #Creacion de la ventana root_crear_tienda
+    global frame_mostrar_reportes_material
+    frame_mostrar_reportes_material = Frame(root, background="#6c648B")  # Agrega el relleno deseado entre los botones
+    frame_mostrar_reportes_material.grid(row=0, column=1, sticky="nsew")
+    #Crear los witgets que se utilizaran
+    tabla_reportes_material = ttk.Treeview(frame_mostrar_reportes_material, columns=("ID","Nombre","Total Ventas"),show="headings")
+    tabla_reportes_material.column(0, width=80)
+    tabla_reportes_material.column(1, width=150)
+    tabla_reportes_material.column(2, width=80)
+    tabla_reportes_material.heading(0, text="ID", anchor=CENTER)
+    tabla_reportes_material.heading(1, text="Nombre", anchor=CENTER)
+    tabla_reportes_material.heading(2, text="Total Ventas", anchor=CENTER)
+    reportes_material = reporte_ventas_materiales()
+    for row in reportes_material:
+        tabla_reportes_material.insert('','end',values=[row[0],row[1],row[2]])
+    #Mostrar los witgets en la ventana
+    tabla_reportes_material.pack()
+
+def salir():
+    root.quit()
+
+def root_ventas():
+    frame_ventas = Frame(root, background="#C5C6C7")  # Agrega el relleno deseado entre los botones
+    frame_ventas.grid(row=0, column=1, sticky="nsew")  
+    root_mostrar_ventas()
+
+def root_mostrar_ventas():
+    #Creacion de la ventana root_crear_tienda
+    global frame_mostrar_ventas
+    frame_mostrar_ventas = Frame(root, background="#6c648B")  # Agrega el relleno deseado entre los botones
+    frame_mostrar_ventas.grid(row=0, column=1, sticky="nsew")
+    #Crear los witgets que se utilizaran
+    tabla_ventas = ttk.Treeview(frame_mostrar_ventas, columns=("ID","Tienda","Material","Empleado","Cantidad","Precio","Fecha"),show="headings")
+    tabla_ventas.column(0, width=80)
+    tabla_ventas.column(1, width=80)
+    tabla_ventas.column(2, width=80)
+    tabla_ventas.column(3, width=80)
+    tabla_ventas.column(4, width=80)
+    tabla_ventas.column(5, width=80)
+    tabla_ventas.column(6, width=80)
+    tabla_ventas.heading(0, text="ID", anchor=CENTER)
+    tabla_ventas.heading(1, text="Tienda", anchor=CENTER)
+    tabla_ventas.heading(2, text="Material", anchor=CENTER)
+    tabla_ventas.heading(3, text="Empleado", anchor=CENTER)
+    tabla_ventas.heading(4, text="Cantidad", anchor=CENTER)
+    tabla_ventas.heading(5, text="Precio", anchor=CENTER)
+    tabla_ventas.heading(6, text="Fecha", anchor=CENTER)
+    ventas_dia = consultar_ventas_dia()
+    for row in ventas_dia:
+        tabla_ventas.insert('','end',values=[row[0],row[1],row[2],row[3],row[4],row[5],row[6]])
+    #Mostrar los witgets en la ventana
+    tabla_ventas.pack()
+    #button_crear_venta = Button(frame_mostrar_ventas, text="Agregar Venta", command=root_agregar_venta, width=15, bg="#66FCF1").pack(side="left" ,padx=5, pady=5)
+
 #-------------------Menu principal------------------           
 root = Tk()
 root.title("Aplicacion Don Tono")
@@ -280,5 +372,9 @@ frame_principal.grid_rowconfigure(0, weight=1)
 frame_principal.grid_columnconfigure(0, weight=1)
 button_tienda = Button(frame_principal, text="Tiendas", width=15, bg="#66FCF1", command=root_mostrar_tienda).pack(side="top",padx=5,pady=5)
 button_empleado = Button(frame_principal, text="Empleados", width=15, bg="#66FCF1", command=root_mostrar_empleado).pack(side="top",padx=5,pady=5)
+button_reportes_empleado = Button(frame_principal, text="Reportes Ventas Empleado", width=15, bg="#66FCF1", command=root_reportes_empleado).pack(side="top",padx=5,pady=5)
+button_reportes_material = Button(frame_principal, text="Reportes Ventas Material", width=15, bg="#66FCF1", command=root_reportes_material).pack(side="top",padx=5,pady=5)
+button_ventas = Button(frame_principal, text="Ventas", width=15, bg="#66FCF1", command=root_ventas).pack(side="top",padx=5,pady=5)
+button_salir = Button(frame_principal,text="Salir",width=15, bg="#66FCF1", command=lambda: salir()).pack(side="top",padx=5,pady=5)
 
 root.mainloop()

@@ -15,3 +15,88 @@ def editar_venta(id, valores):
 def eliminar_venta(id):
     resultado = q.mod("DELETE FROM venta WHERE id = %s", (id))
     return resultado
+
+def existencia_material(valores):
+    consulta = "SELECT cantidad from existencias_tienda where existencias_tienda.tienda_id = "+str(valores[1])+" AND existencias_tienda.tienda_id = "+str(valores[2])
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    if(resultado != []):
+        return resultado[0][0]
+    return resultado
+def ultima_venta_id():
+    consulta = "Select id from ventas ORDER BY id DESC limit 1"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    if(resultado != []):
+        return resultado[0][0]
+    return resultado
+def existencia_id(valores):
+    consulta = "Select id from existencias_tienda where existencias_tienda.tienda_id = "+str(valores[1])+" AND existencias_tienda.material_id = "+str(valores[2])
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    if(resultado != []):
+        return resultado[0][0]
+    return resultado
+def existencias_tienda(tienda_id):
+    consulta = "Select material.id, material.nombre,cantidad from material, existencias_tienda where existencias_tienda.tienda_id = "+str(tienda_id)+" AND existencias_tienda.material_id = material.id"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    return resultado
+def precio_material(material_id):
+    consulta = "Select precio from material where material.id = "+str(material_id)
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    if(resultado != []):
+        return resultado[0][0]
+    return resultado
+def registrar_venta(valores,venta_id):
+    try:
+        # Iniciar la transacción
+        conexion = q.conexion()
+        precio = precio_material(valores[1])
+        precio = precio*valores[3]
+        cursor = conexion.cursor()
+        valores.append(1)
+        valores.append(q.timestamp())
+        cantidad_actual = existencia_material(valores)
+        cantidad_nueva = cantidad_actual - valores[3]
+        var_existencia_id = existencia_id(valores)
+        # Verificar si hay suficientes existencias del producto en la tienda
+        if cantidad_actual >= valores[3]:
+            # Realizar la venta
+            cursor.execute("Insert into ventas (id, tienda_id, material_id, empleado_id, cantidad, precio, estatus, created_at) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(venta_id,valores[0],valores[1],valores[2],valores[3],precio,valores[4],valores[5]))
+            cursor.execute("UPDATE existencias_tienda SET cantidad = %s, updated_at = %s WHERE id = %s",(cantidad_nueva,q.timestamp(),var_existencia_id))
+
+            # Confirmar la transacción
+            conexion.commit()
+            print("Venta realizada con éxito")
+            return True
+        else:
+            print("No hay suficientes existencias del producto en la tienda")
+
+    except Exception as error:
+        # Ocurrió un error, deshacer la transacción
+        conexion.rollback()
+        print("Error durante la transacción:", error)
+        return False
+
+    finally:
+        # Cerrar el cursor y la conexión
+        cursor.close()
+        conexion.close()
+def reporte_ventas_materiales():
+    consulta = "select material.id, material.nombre, SUM(ventas.precio) from material, ventas where ventas.material_id = material.id GROUP BY ventas.material_id"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    return resultado
+def reporte_ventas_empleados():
+    consulta = "select empleado.id, empleado.nombre, empleado.apellido_paterno, SUM(ventas.precio) from empleado, ventas where ventas.empleado_id = empleado.id GROUP BY ventas.empleado_id"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    return resultado
+def consultar_ventas_dia():
+    fecha = q.fecha_actual()
+    consulta = "Select ventas.id,tienda.nombre, material.nombre, empleado.nombre, ventas.cantidad, ventas.precio,ventas.created_at from tienda, material, empleado, ventas where ventas.tienda_id = tienda.id AND material.id = ventas.material_id AND empleado.id = ventas.empleado_id AND DATE(ventas.created_at) = '"+str(fecha)+"' AND ventas.estatus = 1 ORDER BY ventas.created_at DESC"
+    resultado = q.select(consulta)
+    resultado = q.consulta_lista(resultado)
+    return resultado
